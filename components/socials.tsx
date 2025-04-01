@@ -8,7 +8,7 @@ const Socials = () => {
   return (
     <div className="w-full ">
       <Link
-        href={`${process.env.BACKEND_URL}/login/google`}
+        href={`${process.env.BACKEND_URL}/user/login/google`}
         className="flex py-2 w-full justify-center text-[13px] gap-2 font-semibold items-center rounded border border-border hover:bg-secondary"
       >
         <Image alt="google icon" src={google} height={20} /> Continue with
