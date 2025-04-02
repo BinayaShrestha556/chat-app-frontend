@@ -19,8 +19,8 @@ const Navbar = () => {
     },
   ];
   return (
-    <div className="w-full mt-2 ">
-      <div className="w-5/6  rounded-xl p-2  flex m-auto h-14 items-center justify-between">
+    <div className="w-full ">
+      <div className="w-5/6  rounded-xl p-2 border-b shadow flex m-auto h-14 items-center justify-between">
         <div className="left flex items-center ">
           <Image src={logo} alt="logo" height={70} />
           <h1 className="text-[26px] font-bold bg-gradient-to-r from-[#088ADD] to-primary bg-clip-text text-transparent">

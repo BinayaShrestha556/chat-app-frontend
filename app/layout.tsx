@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lato.className} antialiased h-screen w-full flex flex-col`}
+        className={`${lato.className} antialiased h-screen w-full flex gap-2 flex-col`}
       >
         <Navbar />
         {children}
