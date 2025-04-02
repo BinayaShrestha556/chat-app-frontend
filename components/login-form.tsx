@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import {
@@ -14,6 +14,8 @@ import {
 import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const LoginForm = () => {
   const [pending, setTransition] = useTransition();
@@ -28,7 +30,28 @@ const LoginForm = () => {
       password: "",
     },
   });
-  const onSubmit = async () => {};
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    setTransition(async () => {
+      try {
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/login`,
+          values,
+          { withCredentials: true }
+        );
+
+        if (response.status === 200) router.push("/");
+      } catch (error: any) {
+        setError(error.response.data.message);
+      }
+    });
+  };
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
   return (
     <div className=" h-full flex flex-col w-full justify-center  ">
       <Form {...form}>
@@ -73,12 +96,30 @@ const LoginForm = () => {
             )}
           />
 
+          {error && (
+            <p className="text-red-500 -mt-4 -mb-4 text-sm font-semibold">
+              {error}
+            </p>
+          )}
           <Link
             href={"/"}
             className="text-[13px] text-center w-fit self-center text-foreground/90 font-semibold"
           >
             Fogot password?
           </Link>
+          <Button
+            type="button"
+            onClick={async () => {
+              const res = await axios.get("http://localhost:3000/user/status", {
+                withCredentials: true,
+              });
+
+              console.log(res.data);
+            }}
+          >
+            test
+          </Button>
+
           <Button>Login</Button>
         </form>
       </Form>

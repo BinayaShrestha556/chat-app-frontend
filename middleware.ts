@@ -3,6 +3,7 @@ import {
   apiAuthPrefix,
   authRoutes,
   publicRoutes,
+  redirectToDashboardRoute,
 } from "@/routes";
 import { NextRequest } from "next/server";
 
@@ -20,9 +21,14 @@ export async function middleware(req: NextRequest) {
   const isApiRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isRedirect = redirectToDashboardRoute.includes(nextUrl.pathname);
   if (isApiRoute) {
     return;
   }
+  if (isRedirect) {
+    return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+  }
+
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));

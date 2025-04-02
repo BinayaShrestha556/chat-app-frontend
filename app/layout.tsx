@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/navbar/navbar";
 
 const lato = Lato({ weight: ["400", "700"], subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -15,7 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lato.className} antialiased h-full`}>{children}</body>
+      <body
+        className={`${lato.className} antialiased h-screen w-full flex flex-col`}
+      >
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

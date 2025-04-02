@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import loginIllustration from "@/public/login_image_svg.svg";
 import { usePathname } from "next/navigation";
 
@@ -11,6 +11,11 @@ const layout = ({
 }>) => {
   const pathname = usePathname();
   console.log(pathname);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) return null;
   return (
     <div className="flex h-full">
       <div className="w-[40%] bg-[#2E2CE7] p-10 flex flex-col justify-around">
