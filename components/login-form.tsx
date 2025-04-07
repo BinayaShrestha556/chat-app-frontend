@@ -20,13 +20,13 @@ import axios from "axios";
 const LoginForm = () => {
   const [pending, setTransition] = useTransition();
   const loginSchema = z.object({
-    email: z.string().email(),
-    password: z.string(),
+    username: z.string().min(1),
+    password: z.string().min(1),
   });
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -36,14 +36,15 @@ const LoginForm = () => {
     setTransition(async () => {
       try {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/user/login`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
           values,
           { withCredentials: true }
         );
 
         if (response.status === 200) router.push("/");
       } catch (error: any) {
-        setError(error.response.data.message);
+        console.log(error.response.data.error);
+        setError(error.response.data.error);
       }
     });
   };
@@ -61,17 +62,12 @@ const LoginForm = () => {
         >
           <FormField
             control={form.control}
-            name="email"
+            name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm ">Email</FormLabel>
+                <FormLabel className="text-sm ">Username</FormLabel>
                 <FormControl>
-                  <Input
-                    className="rounded"
-                    disabled={pending}
-                    {...field}
-                    type="email"
-                  />
+                  <Input className="rounded" disabled={pending} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

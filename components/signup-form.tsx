@@ -19,19 +19,22 @@ import Link from "next/link";
 const SignupForm = () => {
   const [pending, setTransition] = useTransition();
   const loginSchema = z.object({
-    email: z.string().email(),
+    fullname: z.string().email(),
     password: z.string().min(6),
     username: z.string().min(3),
   });
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      fullname: "",
       password: "",
       username: "",
     },
   });
-  const onSubmit = async () => {};
+  const onSubmit = async () => {
+    try {
+    } catch (error) {}
+  };
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -46,7 +49,7 @@ const SignupForm = () => {
         >
           <FormField
             control={form.control}
-            name="email"
+            name="fullname"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm ">Email</FormLabel>

@@ -8,16 +8,21 @@ import {
 import { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const response = await fetch("http://localhost:3000/user/status", {
+  const response = await fetch("http://localhost:3000/api/auth/get-user", {
     credentials: "include", // Important for session cookies
     headers: {
       Cookie: req.headers.get("cookie") || "", // Forward cookies
     },
   });
-  const res = await response.json();
+
+  let isLoggedIn = false;
+  console.log(response.status);
+  if (response.status === 200) {
+    isLoggedIn = true;
+  }
   const { nextUrl } = req;
   console.log("Middleware triggered for:", nextUrl.pathname);
-  const isLoggedIn = res.login;
+
   const isApiRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
