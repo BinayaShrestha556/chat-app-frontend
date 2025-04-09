@@ -6,7 +6,7 @@ export const getSidebar = async () => {
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages/get-conversations`,
       { withCredentials: true }
     );
-    console.log(res);
+
     const formattedItems = res.data.map((e: any) => ({
       id: e.id,
 
@@ -18,7 +18,7 @@ export const getSidebar = async () => {
       },
       participants: e.participants,
     }));
-    console.log(formattedItems);
+
     return formattedItems;
   } catch (error) {
     console.log(error);

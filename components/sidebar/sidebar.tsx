@@ -32,7 +32,7 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <div className="w-full h-full rounded-xl shadow-xl p-3 border-[1px] border-border">
+    <div className="w-full h-full overflow-y-scroll  rounded-xl shadow-xl p-3 border-[1px] border-border">
       <Top />
       <div className="h-[1px] bg-border w-full my-2" />
       {items?.map((e, i) => (

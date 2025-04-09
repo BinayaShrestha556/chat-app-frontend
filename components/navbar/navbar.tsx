@@ -10,10 +10,11 @@ import { useUserStore } from "@/hooks/user-store";
 import axios from "axios";
 import { Button } from "../ui/button";
 import { io } from "socket.io-client";
+import { useSocketConnection, useSocketStore } from "@/hooks/useSocket-store";
 
 const Navbar = () => {
   const { user, setUser } = useUserStore();
-
+  useSocketConnection();
   useEffect(() => {
     const fetchUser = async () => {
       try {

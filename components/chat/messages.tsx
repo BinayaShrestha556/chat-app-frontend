@@ -1,9 +1,11 @@
 "use client";
 import { useUserStore } from "@/hooks/user-store";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { formatTime } from "../sidebar/sidebar-card";
+import useListenMessage from "@/hooks/useListenMessage";
+import { useMessageStore } from "@/hooks/message-store";
 
-interface Message {
+export interface Message {
   createdAt: string;
   body: string;
   senderId: string;
@@ -17,8 +19,18 @@ interface MessageListProps {
 const MessageList: React.FC<MessageListProps> = ({ messages }) => {
   const { user } = useUserStore(); // Get the logged-in user
 
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to the bottom of the chat container when messages change
+    const chatContainer = chatContainerRef.current;
+    if (chatContainer) chatContainer.scrollTop = chatContainer.scrollHeight;
+  }, [messages]);
   return (
-    <div className="p-4 space-y-3">
+    <div
+      className="p-4 space-y-3 overflow-y-scroll h-[calc(100%-120px)]"
+      ref={chatContainerRef}
+    >
       {messages &&
         messages.map((msg, index) => {
           const isOwnMessage = msg.senderId === user.id; // Check if the sender is the logged-in user

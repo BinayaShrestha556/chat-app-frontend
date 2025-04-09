@@ -3,7 +3,10 @@ import useFetch from "@/api-fetch/fetch";
 import Bottom from "@/components/chat/bottom";
 import MessageList from "@/components/chat/messages";
 import TopPart from "@/components/chat/top-part";
+import { useMessageStore } from "@/hooks/message-store";
+import useListenMessage from "@/hooks/useListenMessage";
 import { useUserStore } from "@/hooks/user-store";
+import { useSocketStore } from "@/hooks/useSocket-store";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -28,21 +31,27 @@ interface ChatData {
 
 const Page = () => {
   const [conversation, setConversation] = useState<ChatData | null>(null);
-
+  useListenMessage();
+  const { messagesByConversation, setMessages } = useMessageStore();
   const { user } = useUserStore();
   const params = useParams();
   const { callServer, error, loading } = useFetch();
   const id = params?.id as string;
+  const { joinRoom } = useSocketStore();
   useEffect(() => {
     const getData = async () => {
       const data = await callServer(`/messages/get-messages/${id}`, "GET");
 
       setConversation(data);
+      setMessages(data.id, data.messages);
+      if (data) {
+        joinRoom(data.id);
+      }
+      // console.log(data.id, data.messages);
     };
-
     getData();
   }, [id]);
-
+  const messages = messagesByConversation[id];
   if (loading) return null;
   const filteredParticipants = conversation?.participants.filter(
     (e) => e.username !== user.username
@@ -57,9 +66,9 @@ const Page = () => {
   return (
     <div className="relative h-full">
       <TopPart image={image} name={name || ""} />
-      <MessageList messages={conversation?.messages} />
+      <MessageList messages={messages} />
       <div className="absolute bottom-0 w-full">
-        <Bottom />
+        <Bottom roomId={id} />
       </div>
     </div>
   );
