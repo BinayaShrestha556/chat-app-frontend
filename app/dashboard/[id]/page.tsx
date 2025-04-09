@@ -44,9 +44,7 @@ const Page = () => {
 
       setConversation(data);
       setMessages(data.id, data.messages);
-      if (data) {
-        joinRoom(data.id);
-      }
+
       // console.log(data.id, data.messages);
     };
     getData();

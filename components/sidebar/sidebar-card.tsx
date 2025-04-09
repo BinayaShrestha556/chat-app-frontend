@@ -1,10 +1,15 @@
+"use client";
+import { useMessageStore } from "@/hooks/message-store";
+import useListenMessage from "@/hooks/useListenMessage";
+import { useSocketStore } from "@/hooks/useSocket-store";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { RiCheckDoubleFill } from "react-icons/ri";
 import { WiMoonAltNew } from "react-icons/wi";
 interface SidebarCardProps {
+  id: string;
   image: string | string[];
   status?: "DELIVERED" | "SEEN" | "NOT SEEN";
   time: string;
@@ -39,6 +44,7 @@ export const formatTime = (timestamp: string): string => {
   return monthDay; // Older than a week
 };
 const SideBarCard = ({
+  id,
   image,
   status = "DELIVERED",
   time,
@@ -46,6 +52,15 @@ const SideBarCard = ({
   name,
   href,
 }: SidebarCardProps) => {
+  useListenMessage();
+  const { messagesByConversation, setMessages } = useMessageStore();
+
+  const lastMessage = messagesByConversation[id]
+    ? messagesByConversation[id][messagesByConversation[id].length - 1].body
+    : message;
+  useEffect(() => {
+    console.log(messagesByConversation[id]);
+  }, [messagesByConversation]);
   return (
     <Link href={href} className="h-14 w-full flex items-center relative gap-2">
       <div className="relative h-full rounded-full overflow-hidden  aspect-square">
@@ -61,7 +76,7 @@ const SideBarCard = ({
       <div className="flex-1 w-40">
         <h1>{name}</h1>
         <h3 className="text-muted-foreground -mt-0.5 text-sm truncate ">
-          {message}
+          {lastMessage}
         </h3>
       </div>
       <div className="flex items-center self-center gap-1">
