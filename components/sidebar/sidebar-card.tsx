@@ -52,7 +52,6 @@ const SideBarCard = ({
   name,
   href,
 }: SidebarCardProps) => {
-  useListenMessage();
   const { messagesByConversation, setMessages } = useMessageStore();
 
   const lastMessage = messagesByConversation[id]

@@ -41,7 +41,7 @@ const Page = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await callServer(`/messages/get-messages/${id}`, "GET");
-
+      // joinRoom(id);
       setConversation(data);
       setMessages(data.id, data.messages);
 

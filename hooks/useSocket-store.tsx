@@ -22,9 +22,12 @@ export const useSocketStore = create<ISocketStore>((set, get) => ({
   setOnlineUsers: (users) => set({ onlineUsers: users }),
   joinRoom: (roomId) => {
     const socket = get().socket;
+
     if (socket) {
-      socket.emit("join-room", roomId);
-      console.log("room joined");
+      {
+        socket.emit("join-room", roomId);
+        console.log("room joined");
+      }
     }
   },
 

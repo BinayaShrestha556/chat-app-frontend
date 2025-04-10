@@ -25,7 +25,7 @@ const Sidebar = () => {
   const { user } = useUserStore();
   const [items, setItems] = useState<items[] | null>();
   const { joinRoom } = useSocketStore();
-  const { messagesByConversation } = useMessageStore();
+ 
   useEffect(() => {
     const fetchData = async () => {
       const sidebarItems = await getSidebar();

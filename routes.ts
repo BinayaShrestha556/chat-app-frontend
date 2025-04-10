@@ -19,6 +19,7 @@ export const authRoutes = [
   "/auth/test",
   "/auth/users/login",
   "/auth/users/register",
+  "/auth/signup",
 ];
 /**
  * the prefix for API authentication routes

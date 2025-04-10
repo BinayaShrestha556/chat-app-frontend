@@ -12,16 +12,17 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-
+import useFetch from "@/api-fetch/fetch";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const SignupForm = () => {
-  const [pending, setTransition] = useTransition();
   const loginSchema = z.object({
-    fullname: z.string().email(),
+    fullname: z.string().min(1),
     password: z.string().min(6),
     username: z.string().min(3),
+    gender: z.string().min(1),
   });
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -31,9 +32,16 @@ const SignupForm = () => {
       username: "",
     },
   });
-  const onSubmit = async () => {
+  const { callServer, error, loading } = useFetch();
+  const router = useRouter();
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
-    } catch (error) {}
+      console.log(values);
+      await callServer("/auth/signup", "POST", values);
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -52,14 +60,9 @@ const SignupForm = () => {
             name="fullname"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm ">Email</FormLabel>
+                <FormLabel className="text-sm ">Fullname</FormLabel>
                 <FormControl>
-                  <Input
-                    className="rounded"
-                    disabled={pending}
-                    {...field}
-                    type="email"
-                  />
+                  <Input className="rounded" disabled={loading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,7 +75,7 @@ const SignupForm = () => {
               <FormItem>
                 <FormLabel className="text-sm ">Username</FormLabel>
                 <FormControl>
-                  <Input className="rounded" disabled={pending} {...field} />
+                  <Input className="rounded" disabled={loading} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -87,10 +90,31 @@ const SignupForm = () => {
                 <FormControl>
                   <Input
                     className="rounded"
-                    disabled={pending}
+                    disabled={loading}
                     {...field}
                     type="password"
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm">Gender</FormLabel>
+                <FormControl>
+                  <select
+                    {...field}
+                    disabled={loading}
+                    className="rounded w-full border px-3 py-2 text-sm"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
