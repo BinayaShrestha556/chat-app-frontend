@@ -12,7 +12,7 @@ function page() {
             Login to your account
           </h1>
           <h2 className="text-sm ">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/auth/signup" className="text-primary font-semibold">
               Sign up
             </Link>

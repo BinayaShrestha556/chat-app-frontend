@@ -3,7 +3,7 @@ import { useMessageStore } from "@/hooks/message-store";
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { RiCheckDoubleFill } from "react-icons/ri";
 import { WiMoonAltNew } from "react-icons/wi";

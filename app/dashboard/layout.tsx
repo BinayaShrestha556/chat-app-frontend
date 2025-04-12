@@ -3,7 +3,7 @@ import Sidebar from "@/components/sidebar/sidebar";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const layout = ({
+const Layout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -30,4 +30,4 @@ const layout = ({
   );
 };
 
-export default layout;
+export default Layout;

@@ -13,7 +13,7 @@ const SearchUserCard: React.FC<SearchData> = ({
   profilePic,
   username,
 }) => {
-  const { callServer, error, loading } = useFetch();
+  const { callServer, loading } = useFetch();
   const { user } = useUserStore();
   const router = useRouter();
   const onclick = async () => {

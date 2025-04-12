@@ -14,8 +14,8 @@ import {
 import { Input } from "./ui/input";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
-import axios from "axios";
+
+import axios, { AxiosError } from "axios";
 
 const LoginForm = () => {
   const [pending, setTransition] = useTransition();
@@ -30,7 +30,7 @@ const LoginForm = () => {
       password: "",
     },
   });
-  const router = useRouter();
+
   const [error, setError] = useState("");
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
     setTransition(async () => {
@@ -42,9 +42,12 @@ const LoginForm = () => {
         );
 
         if (response.status === 200) window.location.pathname = "/";
-      } catch (error: any) {
-        console.log(error.response.data.error);
-        setError(error.response.data.error);
+      } catch (err: unknown) {
+        if (err instanceof AxiosError) {
+          setError(err.response?.data?.error || "Something went wrong");
+        } else {
+          setError("An unknown error occurred");
+        }
       }
     });
   };

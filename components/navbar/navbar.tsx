@@ -10,18 +10,20 @@ import { useUserStore } from "@/hooks/user-store";
 
 import { Button } from "../ui/button";
 
-import { useSocketConnection, useSocketStore } from "@/hooks/useSocket-store";
-import useFetch from "@/api-fetch/fetch";
+import { useSocketConnection } from "@/hooks/useSocket-store";
+import useFetch, { refresh } from "@/api-fetch/fetch";
 import { RiLoader2Line } from "react-icons/ri";
 import { pacifico } from "@/app/font";
+import { AxiosError } from "axios";
 
 const Navbar = () => {
   const { user, setUser } = useUserStore();
   useSocketConnection();
-  const { callServer, error, loading } = useFetch();
+  const { callServer, loading } = useFetch();
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        await refresh();
         const data = await callServer("/auth/get-user", "GET");
         if (data)
           setUser({
@@ -31,8 +33,12 @@ const Navbar = () => {
             username: data.username,
             profilePic: data.profilePic,
           });
-      } catch (error: any) {
-        console.log("Failed to fetch user:", error.response?.data || error);
+      } catch (err: unknown) {
+        if (err instanceof AxiosError) {
+          console.log(err.response?.data?.error || "Something went wrong");
+        } else {
+          console.log("An unknown error occurred");
+        }
       }
     };
 

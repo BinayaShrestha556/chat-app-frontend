@@ -4,7 +4,7 @@ import axios from "axios";
 const useServer = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [count, setCount] = useState(0);
   const callServer = async (
     url: string,
     method: "POST" | "GET",
@@ -27,15 +27,15 @@ const useServer = () => {
           { withCredentials: true }
         );
       }
+      setCount((e) => e++);
 
       return response.data;
     } catch (err: any) {
       console.error(err);
-      if (err.response.status === 403) {
+      if (err.response.status === 403 && count <= 2) {
         console.log("hello from fetch ts");
         await refresh();
         await callServer(url, method, data);
-        window.location.reload();
       }
       setError(err.response?.data?.error || "Something went wrong");
 

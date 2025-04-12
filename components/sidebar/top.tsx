@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { BiSearch } from "react-icons/bi";
 import { cn } from "@/lib/utils";

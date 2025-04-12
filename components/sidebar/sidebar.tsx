@@ -6,6 +6,7 @@ import { getSidebar } from "@/api-fetch/getSidebar";
 import { useUserStore } from "@/hooks/user-store";
 import { useSocketStore } from "@/hooks/useSocket-store";
 import { RiLoader5Line } from "react-icons/ri";
+import { AxiosError } from "axios";
 
 interface items {
   id: string;
@@ -33,14 +34,19 @@ const Sidebar = () => {
       try {
         setLoading(true);
         const sidebarItems = await getSidebar();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const convoIds: string[] = sidebarItems.map((e: any) => e.id);
         convoIds.forEach((element) => {
           joinRoom(element);
         });
         setItems(sidebarItems);
         setLoading(false);
-      } catch (error) {
-        console.log(error);
+      } catch (err: unknown) {
+        if (err instanceof AxiosError) {
+          console.log(err.response?.data?.error || "Something went wrong");
+        } else {
+          console.log("An unknown error occurred");
+        }
         setLoading(false);
       }
     };

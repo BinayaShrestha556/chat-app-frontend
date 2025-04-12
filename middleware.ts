@@ -8,12 +8,16 @@ import {
 import { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const response = await fetch("http://localhost:3000/api/auth/get-user", {
-    credentials: "include", // Important for session cookies
-    headers: {
-      Cookie: req.headers.get("cookie") || "", // Forward cookies
-    },
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/get-user`,
+    {
+      credentials: "include", // Important for session cookies
+      headers: {
+        Cookie: req.headers.get("cookie") || "", // Forward cookies
+      },
+    }
+  );
+  console.log(response.status);
 
   let isLoggedIn = false;
 

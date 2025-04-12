@@ -15,8 +15,6 @@ import { Input } from "./ui/input";
 import useFetch from "@/api-fetch/fetch";
 import { Button } from "./ui/button";
 
-import { useRouter } from "next/navigation";
-
 const SignupForm = () => {
   const loginSchema = z.object({
     fullname: z.string().min(1),
@@ -32,8 +30,8 @@ const SignupForm = () => {
       username: "",
     },
   });
-  const { callServer, error, loading } = useFetch();
-  const router = useRouter();
+  const { callServer, loading } = useFetch();
+
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
       console.log(values);
