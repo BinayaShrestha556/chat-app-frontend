@@ -3,7 +3,7 @@ import React, { useState, useCallback } from "react";
 import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
-import { BiCross } from "react-icons/bi";
+
 import { TiDelete } from "react-icons/ti";
 
 const CLOUD_NAME = "dtnzu6ts5";
@@ -49,16 +49,16 @@ const ImageUploader = ({
   });
 
   return (
-    <div className="w-full bg-white rounded-xl max-w-md mx-auto flex flex-col gap-4 h-48">
+    <div className="w-full backdrop-blur bg-white/10  rounded-xl max-w-md mx-auto flex flex-col gap-4 p-4">
       {!url && (
         <div
           {...getRootProps()}
-          className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition
+          className={`border-2 border-dashed rounded-xl bg-accent text-accent-foreground p-6 text-center cursor-pointer transition
           ${isDragActive ? "border-blue-400 bg-blue-50" : "border-gray-300"}
         `}
         >
           <input {...getInputProps()} />
-          <p className="text-gray-600">
+          <p className="">
             {isDragActive
               ? "Drop the image here..."
               : "Drag & drop or click to select an image"}
@@ -68,7 +68,7 @@ const ImageUploader = ({
       {uploading && <p className="text-blue-500 text-sm">Uploading...</p>}
 
       {url && (
-        <div className="flex flex-col items-center relative h-full w-48">
+        <div className="flex flex-col items-center relative h-48 w-48">
           <p className="text-sm text-gray-600 mb-2">Uploaded Image:</p>
           <Image
             src={url}

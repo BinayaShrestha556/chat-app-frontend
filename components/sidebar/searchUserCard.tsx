@@ -8,7 +8,7 @@ import { RiLoader2Line } from "react-icons/ri";
 
 const SearchUserCard: React.FC<SearchData> = ({
   fullname,
-  gender,
+
   id,
   profilePic,
   username,
@@ -20,7 +20,7 @@ const SearchUserCard: React.FC<SearchData> = ({
     const data = await callServer(`/messages/create-conversation`, "POST", {
       users: [user.id, id],
     });
-    console.log(data);
+
     router.push(`/dashboard/${data.id}`);
   };
   return (

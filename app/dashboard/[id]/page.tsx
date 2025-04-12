@@ -1,25 +1,20 @@
 "use client";
 import useFetch from "@/api-fetch/fetch";
 import Bottom from "@/components/chat/bottom";
-import MessageList from "@/components/chat/messages";
+import MessageList, { Message } from "@/components/chat/messages";
 import TopPart from "@/components/chat/top-part";
 import { useMessageStore } from "@/hooks/message-store";
 import useListenMessage from "@/hooks/useListenMessage";
 import { useUserStore } from "@/hooks/user-store";
 import { useSocketStore } from "@/hooks/useSocket-store";
-import axios from "axios";
+
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 interface ChatData {
   id: string;
   // Change from string to boolean (based on your response)
-  messages: {
-    createdAt: string;
-    body: string;
-    senderId: string;
-    id: string;
-  }[];
+  messages: Message[];
   participants: {
     id: string;
     fullname: string;
@@ -41,7 +36,7 @@ const Page = () => {
   useEffect(() => {
     const getData = async () => {
       const data = await callServer(`/messages/get-messages/${id}`, "GET");
-      // joinRoom(id);
+      joinRoom(id);
       setConversation(data);
       setMessages(data.id, data.messages);
 
@@ -61,10 +56,12 @@ const Page = () => {
       : ""; // If group chat, adjust how you handle images
 
   const name = filteredParticipants?.map((e) => e.fullname).join(", ");
+  if (error) return error;
   return (
     <div className="relative h-full">
-      <TopPart image={image} name={name || ""} />
-      <MessageList messages={messages} />
+      <TopPart image={image} name={name || ""} loading={loading} />
+
+      <MessageList loading={loading} messages={messages} image={image} />
       <div className="absolute bottom-0 w-full">
         <Bottom roomId={id} />
       </div>

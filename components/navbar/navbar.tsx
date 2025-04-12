@@ -2,68 +2,82 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
 import logo from "@/public/icons/logo (1).png";
-import { IoSettings } from "react-icons/io5";
+
 import { MdAccountCircle } from "react-icons/md";
 import { IoMdLogOut } from "react-icons/io";
 import { Dropdown } from "./profile-dropdown";
 import { useUserStore } from "@/hooks/user-store";
-import axios from "axios";
+
 import { Button } from "../ui/button";
-import { io } from "socket.io-client";
+
 import { useSocketConnection, useSocketStore } from "@/hooks/useSocket-store";
+import useFetch from "@/api-fetch/fetch";
+import { RiLoader2Line } from "react-icons/ri";
+import { pacifico } from "@/app/font";
 
 const Navbar = () => {
   const { user, setUser } = useUserStore();
   useSocketConnection();
+  const { callServer, error, loading } = useFetch();
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/get-user`,
-          { withCredentials: true } // Ensures cookies are sent if using auth
-        );
-        if (res.status === 200) {
+        const data = await callServer("/auth/get-user", "GET");
+        if (data)
           setUser({
-            id: res.data.id,
-            fullname: res.data.email,
+            id: data.id,
+            fullname: data.email,
             isLoggedIn: true,
-            username: res.data.username,
-            profilePic: res.data.profilePic,
+            username: data.username,
+            profilePic: data.profilePic,
           });
-        }
       } catch (error: any) {
-        console.error("Failed to fetch user:", error.response?.data || error);
+        console.log("Failed to fetch user:", error.response?.data || error);
       }
     };
-    console.log("hello");
 
     if (!user.isLoggedIn) fetchUser();
   }, [user.isLoggedIn, setUser]);
-
+  const options = [
+    { icon: MdAccountCircle, name: "Profile", onClick: () => {} },
+    {
+      icon: IoMdLogOut,
+      name: "Log out",
+      onClick: async () => {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/logout`, {
+          method: "POST",
+          credentials: "include",
+        });
+        window.location.pathname = "/";
+      },
+    },
+  ];
   return (
-    <div className="w-full">
-      <div className="w-5/6 rounded-xl p-2 border-b shadow flex m-auto h-14 items-center justify-between">
+    <div className="w-full px-2">
+      <div className="w-full md:w-5/6 rounded-md p-2 border-b shadow-sm flex m-auto h-14 items-center justify-between">
         <div className="left flex items-center">
           <Image src={logo} alt="logo" width={70} height={70} />
           <h1 className="text-[26px] font-bold bg-gradient-to-r from-[#088ADD] to-primary bg-clip-text text-transparent">
-            vibeWAVE
+            <span className={pacifico.className}>vibe</span>WAVE
           </h1>
         </div>
         <div className="flex gap-x-2 text-xl items-center">
           {user.isLoggedIn ? (
             <Dropdown
-              options={[
-                { icon: MdAccountCircle, name: "Profile" },
-                { icon: IoMdLogOut, name: "Log out" },
-              ]}
+              options={options}
               image={user.profilePic || "https://avatar.iran.liara.run/public"}
               name={user.username || "User"}
             />
           ) : (
-            <Button> Login </Button>
+            <Button>
+              {" "}
+              {loading ? (
+                <RiLoader2Line className="animate-spin" />
+              ) : (
+                "Login"
+              )}{" "}
+            </Button>
           )}
-          |
-          <IoSettings size={23} className="text-primary" />
         </div>
       </div>
     </div>

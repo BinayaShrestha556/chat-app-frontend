@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState, useTransition } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -14,7 +14,7 @@ import {
 import { Input } from "./ui/input";
 import useFetch from "@/api-fetch/fetch";
 import { Button } from "./ui/button";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 
 const SignupForm = () => {
@@ -38,7 +38,7 @@ const SignupForm = () => {
     try {
       console.log(values);
       await callServer("/auth/signup", "POST", values);
-      router.push("/");
+      window.location.pathname = "/";
     } catch (error) {
       console.log(error);
     }

@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
+
 import Image from "next/image";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { IconType } from "react-icons";
@@ -15,9 +15,11 @@ interface DropDownProps {
   options: {
     icon: IconType;
     name: string;
+    onClick: () => void;
   }[];
   name: string;
 }
+
 export const Dropdown = ({ image, options, name }: DropDownProps) => {
   return (
     <DropdownMenu>
@@ -39,7 +41,7 @@ export const Dropdown = ({ image, options, name }: DropDownProps) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {options.map((e) => (
-          <DropdownMenuItem className="">
+          <DropdownMenuItem onClick={e.onClick} key={e.name} className="">
             <e.icon />
             <span>{e.name}</span>
           </DropdownMenuItem>

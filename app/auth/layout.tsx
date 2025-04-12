@@ -17,8 +17,8 @@ const layout = ({
   }, []);
   if (!mounted) return null;
   return (
-    <div className="flex h-full">
-      <div className="w-[40%] bg-[#2E2CE7] p-10 flex flex-col justify-around">
+    <div className="flex h-full ">
+      <div className="w-[40%] hidden  bg-[#2E2CE7] p-10 md:flex flex-col justify-around">
         <div>
           <h1 className="text-5xl font-bold text-white text-center">
             {" "}
@@ -32,7 +32,9 @@ const layout = ({
         </div>
         <Image alt="hello" src={loginIllustration} priority />
       </div>
-      <div className=" w-[60%] h-full flex items-center">{children}</div>
+      <div className="w-full md:w-[60%] h-full flex items-center">
+        {children}
+      </div>
     </div>
   );
 };

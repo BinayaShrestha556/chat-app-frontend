@@ -17,15 +17,16 @@ export const useSendMessage = () => {
   ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
     now.getSeconds()
   ).padStart(2, "0")}.${String(now.getMilliseconds()).padStart(3, "0")}`;
-  const sendMessage = (roomId: string, message: string) => {
+  const sendMessage = (roomId: string, message: string, pic: boolean) => {
     if (socket && user.id) {
       addMessage(roomId, {
         body: message,
         id: "1",
         createdAt: formatted,
         senderId: user.id,
+        pic,
       });
-      socket.emit("send-message", { roomId, message });
+      socket.emit("send-message", { roomId, message, pic });
     }
   };
 

@@ -16,12 +16,11 @@ export async function middleware(req: NextRequest) {
   });
 
   let isLoggedIn = false;
-  console.log(response.status);
+
   if (response.status === 200) {
     isLoggedIn = true;
   }
   const { nextUrl } = req;
-  console.log("Middleware triggered for:", nextUrl.pathname);
 
   const isApiRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -44,7 +43,6 @@ export async function middleware(req: NextRequest) {
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL("/auth/login", nextUrl));
   }
-  console.log(isLoggedIn, isPublicRoute);
 }
 export const config = {
   matcher: [

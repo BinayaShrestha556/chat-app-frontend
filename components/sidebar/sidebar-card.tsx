@@ -1,19 +1,24 @@
 "use client";
 import { useMessageStore } from "@/hooks/message-store";
-import useListenMessage from "@/hooks/useListenMessage";
-import { useSocketStore } from "@/hooks/useSocket-store";
+
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
 
 import { RiCheckDoubleFill } from "react-icons/ri";
 import { WiMoonAltNew } from "react-icons/wi";
+
 interface SidebarCardProps {
   id: string;
   image: string | string[];
   status?: "DELIVERED" | "SEEN" | "NOT SEEN";
   time: string;
-  message: string;
+  message: {
+    text: string;
+    time: string;
+    sender: string;
+    pic: boolean;
+  };
   name: string;
   href: string;
 }
@@ -52,14 +57,16 @@ const SideBarCard = ({
   name,
   href,
 }: SidebarCardProps) => {
-  const { messagesByConversation, setMessages } = useMessageStore();
+  const { messagesByConversation } = useMessageStore();
 
   const lastMessage = messagesByConversation[id]
-    ? messagesByConversation[id][messagesByConversation[id].length - 1].body
-    : message;
-  useEffect(() => {
-    console.log(messagesByConversation[id]);
-  }, [messagesByConversation]);
+    ? messagesByConversation[id][messagesByConversation[id].length - 1].pic
+      ? "sent a photo"
+      : messagesByConversation[id][messagesByConversation[id].length - 1].body
+    : message.pic
+    ? "Sent a photo"
+    : message.text;
+
   return (
     <Link href={href} className="h-14 w-full flex items-center relative gap-2">
       <div className="relative h-full rounded-full overflow-hidden  aspect-square">

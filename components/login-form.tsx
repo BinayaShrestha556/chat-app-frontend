@@ -41,7 +41,7 @@ const LoginForm = () => {
           { withCredentials: true }
         );
 
-        if (response.status === 200) router.push("/");
+        if (response.status === 200) window.location.pathname = "/";
       } catch (error: any) {
         console.log(error.response.data.error);
         setError(error.response.data.error);
@@ -103,18 +103,6 @@ const LoginForm = () => {
           >
             Fogot password?
           </Link>
-          <Button
-            type="button"
-            onClick={async () => {
-              const res = await axios.get("http://localhost:3000/user/status", {
-                withCredentials: true,
-              });
-
-              console.log(res.data);
-            }}
-          >
-            test
-          </Button>
 
           <Button>Login</Button>
         </form>

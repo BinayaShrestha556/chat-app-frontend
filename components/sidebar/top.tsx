@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Input } from "../ui/input";
+
 import { BiSearch } from "react-icons/bi";
 import { cn } from "@/lib/utils";
 import SearchUserCard from "./searchUserCard";
 import useFetch from "@/api-fetch/fetch";
-import { LoaderIcon } from "lucide-react";
+
 import { RiLoader2Line } from "react-icons/ri";
 export interface SearchData {
   id: string;
@@ -35,6 +35,7 @@ const Top = () => {
     }, 500); // 500ms delay (adjust as needed)
   };
   const [visible, setVisible] = useState(false);
+  if (error) return error;
   return (
     <div
       onFocus={() => setVisible(true)}

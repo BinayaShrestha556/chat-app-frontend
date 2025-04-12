@@ -3,7 +3,7 @@ import axios from "axios";
 
 const useServer = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const callServer = async (
     url: string,
@@ -12,7 +12,7 @@ const useServer = () => {
   ) => {
     try {
       setLoading(true);
-      setError("");
+      setError(null);
       let response;
 
       if (method === "GET") {
@@ -27,11 +27,18 @@ const useServer = () => {
           { withCredentials: true }
         );
       }
-      console.log(response.data, "this is from fetch");
+
       return response.data;
     } catch (err: any) {
       console.error(err);
+      if (err.response.status === 403) {
+        console.log("hello from fetch ts");
+        await refresh();
+        await callServer(url, method, data);
+        window.location.reload();
+      }
       setError(err.response?.data?.error || "Something went wrong");
+
       return null;
     } finally {
       setLoading(false);
@@ -40,5 +47,11 @@ const useServer = () => {
 
   return { callServer, loading, error };
 };
-
+export const refresh = async () => {
+  await axios.post(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh`,
+    {},
+    { withCredentials: true }
+  );
+};
 export default useServer;

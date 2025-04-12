@@ -1,5 +1,5 @@
 import SignupForm from "@/components/signup-form";
-import Socials from "@/components/socials";
+
 import Link from "next/link";
 import React from "react";
 
@@ -18,10 +18,7 @@ const page = () => {
             </Link>
           </h2>
         </div>
-        <Socials />
-        <span className="text-center text-sm text-muted-foreground -mb-1">
-          OR
-        </span>
+
         <SignupForm />
       </div>
     </div>
