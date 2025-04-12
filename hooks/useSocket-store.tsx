@@ -13,7 +13,7 @@ interface ISocketStore {
   disconnectSocket: () => void;
 }
 
-const socketURL = "http://localhost:3000";
+const socketURL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const useSocketStore = create<ISocketStore>((set, get) => ({
   socket: null,
