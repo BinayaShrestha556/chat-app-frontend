@@ -14,7 +14,7 @@ export interface SearchData {
   profilePic: string;
   username: string;
 }
-const Top = () => {
+const Top = ({ fn }: { fn: () => Promise<void> }) => {
   const [searchData, setSearchData] = useState<SearchData[] | null>();
   const { callServer, error, loading } = useFetch();
   const [value, setValue] = useState("");
@@ -69,7 +69,7 @@ const Top = () => {
           ) : searchData && searchData.length > 0 ? (
             <div className="flex flex-col gap-y-2">
               {searchData.map((e) => (
-                <SearchUserCard {...e} key={e.id} />
+                <SearchUserCard {...e} fn={fn} key={e.id} />
               ))}
             </div>
           ) : (

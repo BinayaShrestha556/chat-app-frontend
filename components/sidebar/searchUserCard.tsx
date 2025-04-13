@@ -6,9 +6,9 @@ import { useUserStore } from "@/hooks/user-store";
 import { useRouter } from "next/navigation";
 import { RiLoader2Line } from "react-icons/ri";
 
-const SearchUserCard: React.FC<SearchData> = ({
+const SearchUserCard: React.FC<SearchData & { fn: () => Promise<void> }> = ({
   fullname,
-
+  fn,
   id,
   profilePic,
   username,
@@ -20,7 +20,7 @@ const SearchUserCard: React.FC<SearchData> = ({
     const data = await callServer(`/messages/create-conversation`, "POST", {
       users: [user.id, id],
     });
-
+    fn();
     router.push(`/dashboard/${data.id}`);
   };
   return (

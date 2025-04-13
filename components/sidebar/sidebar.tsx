@@ -29,27 +29,27 @@ const Sidebar = () => {
   const [items, setItems] = useState<items[] | null>();
   const { joinRoom } = useSocketStore();
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const sidebarItems = await getSidebar();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const convoIds: string[] = sidebarItems.map((e: any) => e.id);
-        convoIds.forEach((element) => {
-          joinRoom(element);
-        });
-        setItems(sidebarItems);
-        setLoading(false);
-      } catch (err: unknown) {
-        if (err instanceof AxiosError) {
-          console.log(err.response?.data?.error || "Something went wrong");
-        } else {
-          console.log("An unknown error occurred");
-        }
-        setLoading(false);
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const sidebarItems = await getSidebar();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const convoIds: string[] = sidebarItems.map((e: any) => e.id);
+      convoIds.forEach((element) => {
+        joinRoom(element);
+      });
+      setItems(sidebarItems);
+      setLoading(false);
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        console.log(err.response?.data?.error || "Something went wrong");
+      } else {
+        console.log("An unknown error occurred");
       }
-    };
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, []);
   const formatted = items?.sort(
@@ -59,7 +59,7 @@ const Sidebar = () => {
 
   return (
     <div className="w-full h-full overflow-y-scroll  rounded-md shadow-xl p-3 border-[1px] border-border">
-      <Top />
+      <Top fn={fetchData} />
       <div className="h-[1px] bg-border w-full my-2" />
 
       {loading ? (
