@@ -4,41 +4,41 @@ import axios from "axios";
 const useServer = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [count, setCount] = useState(0);
+
   const callServer = async (
     url: string,
     method: "POST" | "GET",
-    data?: any
-  ) => {
+    data?: any,
+    retryCount = 0
+  ): Promise<any> => {
     try {
       setLoading(true);
       setError(null);
+
+      const fullUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api${url}`;
       let response;
 
       if (method === "GET") {
-        response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api${url}`,
-          { withCredentials: true }
-        );
+        response = await axios.get(fullUrl, {
+          withCredentials: true,
+        });
       } else {
-        response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api${url}`,
-          data,
-          { withCredentials: true }
-        );
+        response = await axios.post(fullUrl, data, {
+          withCredentials: true,
+        });
       }
-      setCount((e) => e++);
 
       return response.data;
     } catch (err: any) {
-      console.error(err);
-      if (err.response.status === 403 && count <= 2) {
-        console.log("hello from fetch ts");
-        await refresh();
-        await callServer(url, method, data);
-      }
-      setError(err.response?.data?.error || "Something went wrong");
+      console.error("Server error:", err);
 
+      if (err.response?.status === 403 && retryCount < 2) {
+        console.log("Token expired, trying refresh...");
+        await refresh();
+        return callServer(url, method, data, retryCount + 1); // 🔁 Retry after refresh
+      }
+
+      setError(err.response?.data?.error || "Something went wrong");
       return null;
     } finally {
       setLoading(false);
@@ -47,11 +47,17 @@ const useServer = () => {
 
   return { callServer, loading, error };
 };
+
 export const refresh = async () => {
-  await axios.post(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh`,
-    {},
-    { withCredentials: true }
-  );
+  try {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh`,
+      {},
+      { withCredentials: true }
+    );
+  } catch (err) {
+    console.error("Token refresh failed:", err);
+  }
 };
+
 export default useServer;

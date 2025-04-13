@@ -1,4 +1,3 @@
-import { Socket } from "socket.io-client";
 import { create } from "zustand";
 
 type User = {
@@ -10,7 +9,9 @@ type User = {
 };
 
 type UserStore = {
+  loading: boolean;
   user: User;
+  setLoading: (loading: boolean) => void;
   setUser: (user: User) => void;
   logout: () => void;
 };
@@ -22,6 +23,10 @@ export const useUserStore = create<UserStore>((set) => ({
     fullname: null,
     isLoggedIn: false,
     profilePic: null,
+  },
+  loading: false,
+  setLoading: (loading) => {
+    set({ loading });
   },
   setUser: (user) => set({ user }),
   logout: () =>

@@ -1,5 +1,6 @@
 "use client";
 import Sidebar from "@/components/sidebar/sidebar";
+import { useUserStore } from "@/hooks/user-store";
 import { usePathname } from "next/navigation";
 import React from "react";
 
@@ -9,7 +10,13 @@ const Layout = ({
   children: React.ReactNode;
 }>) => {
   const pathname = usePathname();
-
+  const { loading } = useUserStore();
+  if (loading)
+    return (
+      <div className="w-full h-full items-center justify-center flex text-accent-foreground text-xl font-bold ">
+        LOADING....
+      </div>
+    );
   return (
     <div className="flex-1 h-[calc(100%-80px)]   pb-2 grow flex gap-2 w-full px-2 md:w-5/6 m-auto">
       <div

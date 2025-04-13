@@ -15,16 +15,22 @@ import useFetch, { refresh } from "@/api-fetch/fetch";
 import { RiLoader2Line } from "react-icons/ri";
 import { pacifico } from "@/app/font";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { user, setUser } = useUserStore();
+  const { user, setUser, loading: userLoading, setLoading } = useUserStore();
   useSocketConnection();
   const { callServer, loading } = useFetch();
+
+  const router = useRouter();
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        setLoading(true);
+
         await refresh();
         const data = await callServer("/auth/get-user", "GET");
+        console.log(data);
         if (data)
           setUser({
             id: data.id,
@@ -33,12 +39,22 @@ const Navbar = () => {
             username: data.username,
             profilePic: data.profilePic,
           });
+        else {
+          router.push("/auth/login");
+        }
+        console.log(loading);
+        setLoading(false);
       } catch (err: unknown) {
         if (err instanceof AxiosError) {
           console.log(err.response?.data?.error || "Something went wrong");
+          router.push("/auth/login");
         } else {
           console.log("An unknown error occurred");
+          router.push("/auth/login");
         }
+        setLoading(false);
+      } finally {
+        setLoading(false);
       }
     };
 
