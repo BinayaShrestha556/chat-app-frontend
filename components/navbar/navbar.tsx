@@ -18,7 +18,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 
 const Navbar = () => {
-  const { user, setUser, loading: userLoading, setLoading } = useUserStore();
+  const { user, setUser, setLoading } = useUserStore();
   useSocketConnection();
   const { callServer, loading } = useFetch();
 
