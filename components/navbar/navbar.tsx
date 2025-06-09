@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import logo from "@/public/icons/logo (1).png";
+import logo from "@/public/icons/cropped_transparent_black_logo.png";
 import { MdAccountCircle } from "react-icons/md";
 import { IoMdLogOut } from "react-icons/io";
 import { Dropdown } from "./profile-dropdown";
@@ -73,10 +73,10 @@ const Navbar = () => {
   ];
   return (
     <div className="w-full py-2">
-      <div className="w-full md:w-5/6 rounded-md p-2 flex m-auto h-14 items-center justify-between">
-        <div className="left flex items-center">
-          <Image src={logo} alt="logo" width={70} height={70} />
-          <h1 className="text-[26px] font-bold bg-gradient-to-r from-[#088ADD] to-primary bg-clip-text text-transparent">
+      <div className="w-full md:w-5/6 rounded-md p-2 px-2.5 flex m-auto h-14 items-center justify-between">
+        <div className="left flex gap-1.5 items-center ">
+          <Image src={logo} alt="logo" width={45} height={45} />
+          <h1 className="text-[26px] font-bold text-black bg-clip-text ">
             <span className={pacifico.className}>vibe</span>WAVE
           </h1>
         </div>

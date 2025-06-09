@@ -58,7 +58,7 @@ const Page = () => {
   const name = filteredParticipants?.map((e) => e.fullname).join(", ");
   if (error) return error;
   return (
-    <div className="relative h-full">
+    <div className="relative h-full antialiased">
       <TopPart image={image} name={name || ""} loading={loading} />
 
       <MessageList loading={loading} messages={messages} image={image} />

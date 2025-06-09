@@ -53,7 +53,7 @@ const MessageList: React.FC<MessageListProps> = ({
     );
   return (
     <div
-      className="p-4 space-y-3 overflow-y-scroll h-[calc(100%-120px)]"
+      className="p-4 space-y-3 overflow-y-scroll bg-gradient-to-bl from-primary/60 via-white  to-white h-[calc(100%-120px)]"
       ref={chatContainerRef}
     >
       {messages &&
@@ -87,17 +87,17 @@ const MessageList: React.FC<MessageListProps> = ({
                 <div
                   className={`p-2 relative rounded  ${
                     isOwnMessage
-                      ? "bg-primary text-white"
-                      : "bg-accent text-black"
+                      ? "bg-secondary text-black rounded-lg shadow shadow-black/10 rounded-tr-[0px]"
+                      : "bg-white shadow-lg shadow-black/10 rounded-lg rounded-tl-[0px] text-black"
                   }`}
                 >
-                  <div
+                  {/* <div
                     className={`top-3 h-2 w-2  rotate-45 absolute  ${
                       isOwnMessage
                         ? "-right-1 rounded-[0_2px_0_0] bg-primary"
                         : "rounded-[0_0_0_2px] bg-accent -left-1"
                     }`}
-                  />
+                  /> */}
                   {msg.pic ? (
                     <div className="relative w-60 h-60 rounded overflow-hidden -m-1 mb-2">
                       {msg.body && (

@@ -58,7 +58,7 @@ const Sidebar = () => {
   );
 
   return (
-    <div className="w-full h-full overflow-y-scroll  rounded-md shadow-xl p-3 border-[1px] border-border">
+    <div className="w-full h-full overflow-y-scroll  rounded-md shadow-xl py-3 border-[1px] border-border">
       <Top fn={fetchData} />
       <div className="h-[1px] bg-border w-full my-2" />
 

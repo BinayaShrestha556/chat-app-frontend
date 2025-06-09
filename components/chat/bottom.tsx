@@ -25,9 +25,15 @@ const Bottom = ({ roomId }: { roomId: string }) => {
   const [message, setMessage] = useState("");
   const [isPhotoOpen, setIsPhotoOpen] = useState(false);
   return (
-    <div className="w-full px-5  h-14 flex items-center p-3 relative gap-3">
+    <div className="w-full px-5 border-t h-14 flex items-center p-3 relative gap-3">
+      {" "}
+      <HiPhoto
+        size={26}
+        className="cursor-pointer text-black/80"
+        onClick={() => setIsPhotoOpen((e) => !e)}
+      />
       <input
-        className="shadow-sm border-accent-foreground w-full px-3 rounded-full bg-accent py-1"
+        className=" w-full px-3 focus:border-0 focus:outline-0  py-1"
         placeholder="Enter message"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -35,13 +41,8 @@ const Bottom = ({ roomId }: { roomId: string }) => {
       />
       <BiSend
         size={26}
-        className="-rotate-45 text-primary -mt-0.5 cursor-pointer"
+        className="-rotate-45 text-black/80 -mt-0.5 cursor-pointer"
         onClick={() => handleKeyDown(undefined, true)}
-      />
-      <HiPhoto
-        size={26}
-        className="cursor-pointer text-primary"
-        onClick={() => setIsPhotoOpen((e) => !e)}
       />
       {isPhotoOpen && (
         <div className="bottom-[110%] absolute left-0 ">

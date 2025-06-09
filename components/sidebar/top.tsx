@@ -34,7 +34,9 @@ const Top = ({ fn }: { fn: () => Promise<void> }) => {
       }
     }, 500); // 500ms delay (adjust as needed)
   };
+  const ref = useRef<HTMLInputElement>(null);
   const [visible, setVisible] = useState(false);
+
   if (error) return error;
   return (
     <div
@@ -42,16 +44,35 @@ const Top = ({ fn }: { fn: () => Promise<void> }) => {
       onBlur={() => {
         setTimeout(() => {
           setVisible(false);
-        }, 500);
+        }, 250);
       }}
-      className="w-full rounded-lg group bg-accent z-50 h-10 items-center p-2 relative flex gap-2"
+      className="w-full rounded-lg group  z-50 h-10 items-center p-3 relative flex gap-2"
     >
-      <BiSearch size={23} />
+      <h3
+        className={cn(
+          "font-bold text-xl overflow-hidden transition-all",
+          visible ? "w-0" : "w-full"
+        )}
+      >
+        Conversations
+      </h3>
       <input
-        className="focus:outline-0 flex-1 placeholder:text-accent-foreground"
+        ref={ref}
+        className={cn(
+          "focus:outline-0 flex-1 px-2 py-1 border-b placeholder:text-accent-foreground transition-all ease-in-out duration-500 ",
+          visible ? "w-full opacity-100" : "opacity-0 w-0"
+        )}
         placeholder="Search"
         value={value}
         onChange={onChange}
+      />
+      <BiSearch
+        className="absolute right-3"
+        size={23}
+        onClick={() => {
+          setVisible((e) => !e);
+          ref.current?.focus();
+        }}
       />
       {(visible || loading) && (
         <div

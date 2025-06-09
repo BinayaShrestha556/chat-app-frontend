@@ -3,9 +3,9 @@ import { useMessageStore } from "@/hooks/message-store";
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
-import { RiCheckDoubleFill } from "react-icons/ri";
 import { WiMoonAltNew } from "react-icons/wi";
 
 interface SidebarCardProps {
@@ -59,16 +59,21 @@ const SideBarCard = ({
 }: SidebarCardProps) => {
   const { messagesByConversation } = useMessageStore();
 
-  const lastMessage = messagesByConversation[id]
-    ? messagesByConversation[id][messagesByConversation[id].length - 1].pic
-      ? "sent a photo"
-      : messagesByConversation[id][messagesByConversation[id].length - 1].body
-    : message.pic
+  const lastMessages = messagesByConversation[id];
+  const lastMsgObj = lastMessages?.[lastMessages.length - 1] || message;
+
+  const lastMessage = lastMsgObj?.pic
     ? "Sent a photo"
-    : message.text;
+    : lastMsgObj?.body || lastMsgObj?.body || "";
+  const pathname = usePathname();
 
   return (
-    <Link href={href} className="h-14 w-full flex items-center relative gap-2">
+    <Link
+      href={href}
+      className={`h-14 w-full px-3 py-2  flex items-center relative gap-2 ${
+        pathname === `/dashboard/${id}` ? "bg-primary" : "bg-transparent"
+      }`}
+    >
       <div className="relative h-full rounded-full overflow-hidden  aspect-square">
         {image.length === 1 && (
           <Image
@@ -80,17 +85,14 @@ const SideBarCard = ({
         )}
       </div>
       <div className="flex-1 w-40">
-        <h1>{name}</h1>
-        <h3 className="text-muted-foreground -mt-0.5 text-sm truncate ">
+        <p className="font-semibold">{name}</p>
+        <p className="text-muted-foreground -mt-0.5 text-sm truncate ">
           {lastMessage}
-        </h3>
+        </p>
       </div>
       <div className="flex items-center self-center gap-1">
         {status === "DELIVERED" ? (
-          <>
-            {" "}
-            <RiCheckDoubleFill /> |{" "}
-          </>
+          <> {/* <RiCheckDoubleFill /> |{" "} */}</>
         ) : status === "NOT SEEN" ? (
           <>
             <WiMoonAltNew className="text-primary" /> |{" "}
