@@ -16,6 +16,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 
 import axios, { AxiosError } from "axios";
+import { saveCookies } from "@/server-actions/login";
 
 const LoginForm = () => {
   const [pending, setTransition] = useTransition();
@@ -39,6 +40,10 @@ const LoginForm = () => {
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
           values,
           { withCredentials: true }
+        );
+        await saveCookies(
+          response.data.accessToken,
+          response.data.refreshToken
         );
 
         if (response.status === 200) window.location.pathname = "/";

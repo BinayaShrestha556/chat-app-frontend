@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { setAccessToken } from "@/server-actions/login";
 
 const useServer = () => {
   const [loading, setLoading] = useState(false);
@@ -50,11 +51,12 @@ const useServer = () => {
 
 export const refresh = async () => {
   try {
-    await axios.post(
+    const data = await axios.post(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/refresh`,
       {},
       { withCredentials: true }
     );
+    await setAccessToken(data.data.accessToken);
   } catch (err) {
     console.error("Token refresh failed:", err);
   }

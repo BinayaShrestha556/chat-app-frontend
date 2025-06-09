@@ -6,22 +6,33 @@ export const getSidebar = async () => {
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages/get-conversations`,
       { withCredentials: true }
     );
-    console.log(res.data);
-    const formattedItems = res.data.map((e: any) => ({
-      id: e.id,
 
-      createdAt: e.createdAt,
-      message: {
-        text: e.messages[0].body,
-        time: e.messages[0].createdAt,
-        sender: e.messages[0].senderId,
-        pic: e.messages[0].pic,
-      },
-      participants: e.participants,
-    }));
+    const formattedItems = res.data.map((e: any) => {
+      const lastMessage = e.messages?.[0];
+
+      return {
+        id: e.id,
+        createdAt: e.createdAt,
+        message: lastMessage
+          ? {
+              text: lastMessage.body,
+              time: lastMessage.createdAt,
+              sender: lastMessage.senderId,
+              pic: lastMessage.pic,
+            }
+          : {
+              text: "No messages yet",
+              time: e.createdAt,
+              sender: null,
+              pic: false,
+            },
+        participants: e.participants,
+      };
+    });
 
     return formattedItems;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching sidebar conversations:", error);
+    return [];
   }
 };

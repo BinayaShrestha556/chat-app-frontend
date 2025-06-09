@@ -2,14 +2,11 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
 import logo from "@/public/icons/logo (1).png";
-
 import { MdAccountCircle } from "react-icons/md";
 import { IoMdLogOut } from "react-icons/io";
 import { Dropdown } from "./profile-dropdown";
 import { useUserStore } from "@/hooks/user-store";
-
 import { Button } from "../ui/button";
-
 import { useSocketConnection } from "@/hooks/useSocket-store";
 import useFetch, { refresh } from "@/api-fetch/fetch";
 import { RiLoader2Line } from "react-icons/ri";
@@ -23,6 +20,7 @@ const Navbar = () => {
   const { callServer, loading } = useFetch();
 
   const router = useRouter();
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -30,7 +28,7 @@ const Navbar = () => {
 
         await refresh();
         const data = await callServer("/auth/get-user", "GET");
-        console.log(data);
+
         if (data)
           setUser({
             id: data.id,
@@ -42,7 +40,6 @@ const Navbar = () => {
         else {
           router.push("/auth/login");
         }
-        console.log(loading);
         setLoading(false);
       } catch (err: unknown) {
         if (err instanceof AxiosError) {
@@ -75,8 +72,8 @@ const Navbar = () => {
     },
   ];
   return (
-    <div className="w-full px-2">
-      <div className="w-full md:w-5/6 rounded-md p-2 border-b shadow-sm flex m-auto h-14 items-center justify-between">
+    <div className="w-full py-2">
+      <div className="w-full md:w-5/6 rounded-md p-2 flex m-auto h-14 items-center justify-between">
         <div className="left flex items-center">
           <Image src={logo} alt="logo" width={70} height={70} />
           <h1 className="text-[26px] font-bold bg-gradient-to-r from-[#088ADD] to-primary bg-clip-text text-transparent">
