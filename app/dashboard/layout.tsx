@@ -4,7 +4,6 @@ import Conversations from "@/components/conversations/conversations";
 import { useUserStore } from "@/hooks/user-store";
 import { usePathname } from "next/navigation";
 import React from "react";
-import Sidebar from "@/components/sidebar/sidebar";
 
 const Layout = ({
   children,

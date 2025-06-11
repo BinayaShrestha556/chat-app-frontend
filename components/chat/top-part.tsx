@@ -46,7 +46,7 @@ const TopPart = ({ image, name, loading }: TopPartProps) => {
               </div>
             ))}
         </div>
-        <span className="text-semibold text-lg">{name}</span>
+        <span className="text-semibold text-lg max-w-56 truncate">{name}</span>
       </div>
       <BiInfoCircle className="text-black/80 text-2xl " />
     </div>

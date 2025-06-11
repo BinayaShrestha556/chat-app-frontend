@@ -20,7 +20,7 @@ const SearchUserCard: React.FC<SearchData & { fn: () => Promise<void> }> = ({
     const data = await callServer(`/messages/create-conversation`, "POST", {
       users: [user.id, id],
     });
-    fn();
+    await fn();
     router.push(`/dashboard/${data.id}`);
   };
   return (

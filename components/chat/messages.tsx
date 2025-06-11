@@ -54,7 +54,7 @@ const MessageList: React.FC<MessageListProps> = ({
     );
   return (
     <div
-      className="p-4 space-y-3 overflow-y-scroll bg-gradient-to-bl from-primary/60 via-white  to-white h-[calc(100%-120px)]"
+      className="p-4 space-y-3 overflow-y-scroll bg-gradient-to-bl from-accent/60 via-white  to-white h-[calc(100%-120px)]"
       ref={chatContainerRef}
     >
       {messages &&

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
+import ModalProviders from "@/providers/modal-providers";
+import { ToastProvider } from "@/providers/toast-provider";
 
 const lato = Lato({ weight: ["400", "700"], subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -18,6 +20,8 @@ export default function RootLayout({
       <body
         className={`${lato.className} antialiased h-screen w-full flex  flex-col`}
       >
+        <ToastProvider />
+        <ModalProviders />
         {children}
       </body>
     </html>

@@ -71,7 +71,7 @@ const SideBarCard = ({
     <Link
       href={href}
       className={`h-14 w-full px-3 py-2  flex items-center relative gap-2 ${
-        pathname === `/dashboard/${id}` ? "bg-primary" : "bg-transparent"
+        pathname === `/dashboard/${id}` ? "bg-accent" : "bg-transparent"
       }`}
     >
       <div className="relative h-full rounded-full   aspect-square">
@@ -106,7 +106,7 @@ const SideBarCard = ({
         )}
       </div>
       <div className="flex-1 w-40">
-        <p className="font-semibold">{name}</p>
+        <p className="font-semibold truncate">{name}</p>
         <p className="text-muted-foreground -mt-0.5 text-sm truncate ">
           {lastMessage}
         </p>

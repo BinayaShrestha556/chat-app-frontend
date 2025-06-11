@@ -2,15 +2,12 @@
 import Image from "next/image";
 import React, { useEffect } from "react";
 import logo from "@/public/icons/cropped_transparent_black_logo.png";
-import { MdAccountCircle } from "react-icons/md";
-import { IoMdLogOut } from "react-icons/io";
-import { Dropdown } from "./profile-dropdown";
+
 import { useUserStore } from "@/hooks/user-store";
-import { Button } from "../ui/button";
+
 import { useSocketConnection } from "@/hooks/useSocket-store";
 import useFetch, { refresh } from "@/api-fetch/fetch";
-import { RiLoader2Line } from "react-icons/ri";
-import { pacifico } from "@/app/font";
+
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import {
@@ -20,11 +17,13 @@ import {
   AiFillSetting,
 } from "react-icons/ai";
 import { AiFillPlusCircle } from "react-icons/ai";
+import { useGroupModal } from "@/hooks/use-create-group-modal";
+import Link from "next/link";
 
 const Navbar = () => {
   const { user, setUser, setLoading } = useUserStore();
   useSocketConnection();
-  const { callServer, loading } = useFetch();
+  const { callServer } = useFetch();
 
   const router = useRouter();
 
@@ -64,20 +63,22 @@ const Navbar = () => {
 
     if (!user.isLoggedIn) fetchUser();
   }, [user.isLoggedIn, setUser]);
-  const options = [
-    { icon: MdAccountCircle, name: "Profile", onClick: () => {} },
-    {
-      icon: IoMdLogOut,
-      name: "Log out",
-      onClick: async () => {
-        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/logout`, {
-          method: "POST",
-          credentials: "include",
-        });
-        window.location.pathname = "/";
-      },
-    },
-  ];
+  // const options = [
+  //   { icon: MdAccountCircle, name: "Profile", onClick: () => {} },
+  //   {
+  //     icon: IoMdLogOut,
+  //     name: "Log out",
+  //     onClick: async () => {
+  //       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/logout`, {
+  //         method: "POST",
+  //         credentials: "include",
+  //       });
+  //       window.location.pathname = "/";
+  //     },
+  //   },
+  // ];
+  const onOpen = useGroupModal((state) => state.onOpen);
+
   return (
     <div className=" px-3 border h-full flex flex-col shadow">
       <div className="h-16 flex items-center justify-center">
@@ -87,10 +88,12 @@ const Navbar = () => {
       </div>
       <div className="flex flex-col justify-between flex-grow w-full  items-center gap-6">
         <div className="">
-          <AiFillHome size={27} />
+          <Link href={"/dashboard"}>
+            <AiFillHome size={27} />
+          </Link>
         </div>
         <div>
-          <AiFillPlusCircle size={27} />
+          <AiFillPlusCircle size={27} onClick={() => onOpen()} />
         </div>
         <div>
           <AiFillHeart size={27} />
