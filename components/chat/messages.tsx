@@ -1,7 +1,7 @@
 "use client";
 import { useUserStore } from "@/hooks/user-store";
 import React, { useEffect, useRef } from "react";
-import { formatTime } from "../sidebar/sidebar-card";
+import { formatTime } from "../conversations/sidebar-card";
 
 import Image from "next/image";
 import { RiLoader5Line } from "react-icons/ri";
@@ -16,7 +16,7 @@ export interface Message {
 
 interface MessageListProps {
   messages?: Message[];
-  image: string;
+  image?: { pfp: string; id: string }[];
   loading: boolean;
 }
 
@@ -37,6 +37,7 @@ const MessageList: React.FC<MessageListProps> = ({
   const {
     user: { profilePic },
   } = useUserStore();
+
   if (loading)
     return (
       <div className="w-full text-accent-foreground text-xl  h-full flex justify-center items-center">
@@ -59,7 +60,9 @@ const MessageList: React.FC<MessageListProps> = ({
       {messages &&
         messages.map((msg, index) => {
           const isOwnMessage = msg.senderId === user.id; // Check if the sender is the logged-in user
-
+          const pfp = isOwnMessage
+            ? profilePic
+            : image?.find((e) => e.id === msg.senderId)?.pfp;
           return (
             <div
               key={index}
@@ -72,7 +75,7 @@ const MessageList: React.FC<MessageListProps> = ({
               <div className="h-8 w-8 rounded-full overflow-hidden relative">
                 {profilePic && (
                   <Image
-                    src={isOwnMessage ? profilePic : image}
+                    src={pfp!}
                     alt="profile"
                     fill
                     className="object-cover object-center"

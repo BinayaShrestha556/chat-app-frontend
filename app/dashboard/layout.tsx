@@ -1,9 +1,10 @@
 "use client";
 import Navbar from "@/components/navbar/navbar";
-import Sidebar from "@/components/sidebar/sidebar";
+import Conversations from "@/components/conversations/conversations";
 import { useUserStore } from "@/hooks/user-store";
 import { usePathname } from "next/navigation";
 import React from "react";
+import Sidebar from "@/components/sidebar/sidebar";
 
 const Layout = ({
   children,
@@ -19,23 +20,21 @@ const Layout = ({
       </div>
     );
   return (
-    <div className="h-full">
+    <div className="flex-1 h-[calc(100%-80px)]   pb-2 grow flex w-full px-2 m-auto">
       <Navbar />
-      <div className="flex-1 h-[calc(100%-80px)]   pb-2 grow flex gap-2 w-full px-2 md:w-5/6 m-auto">
-        <div
-          className={`w-full md:w-80  lg:block ${
-            pathname == "/dashboard" ? " " : "hidden"
-          }`}
-        >
-          <Sidebar />
-        </div>
-        <div
-          className={`flex-1  border-[1px] border-border rounded-md overflow-hidden ${
-            pathname == "/dashboard" ? "hidden md:block" : " "
-          }`}
-        >
-          {children}
-        </div>
+      <div
+        className={`w-full md:w-80  lg:block ${
+          pathname == "/dashboard" ? " " : "hidden"
+        }`}
+      >
+        <Conversations />
+      </div>
+      <div
+        className={`flex-1  border-[1px] border-border  overflow-hidden ${
+          pathname == "/dashboard" ? "hidden md:block" : " "
+        }`}
+      >
+        {children}
       </div>
     </div>
   );

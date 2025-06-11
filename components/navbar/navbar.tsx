@@ -13,6 +13,13 @@ import { RiLoader2Line } from "react-icons/ri";
 import { pacifico } from "@/app/font";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import {
+  AiFillBell,
+  AiFillHeart,
+  AiFillHome,
+  AiFillSetting,
+} from "react-icons/ai";
+import { AiFillPlusCircle } from "react-icons/ai";
 
 const Navbar = () => {
   const { user, setUser, setLoading } = useUserStore();
@@ -72,31 +79,27 @@ const Navbar = () => {
     },
   ];
   return (
-    <div className="w-full py-2">
-      <div className="w-full md:w-5/6 rounded-md p-2 px-2.5 flex m-auto h-14 items-center justify-between">
-        <div className="left flex gap-1.5 items-center ">
-          <Image src={logo} alt="logo" width={45} height={45} />
-          <h1 className="text-[26px] font-bold text-black bg-clip-text ">
-            <span className={pacifico.className}>vibe</span>WAVE
-          </h1>
+    <div className=" px-3 border h-full flex flex-col shadow">
+      <div className="h-16 flex items-center justify-center">
+        <div className="w-12 relative ">
+          <Image src={logo} alt="logo" className="object-fit object-center" />
         </div>
-        <div className="flex gap-x-2 text-xl items-center">
-          {user.isLoggedIn ? (
-            <Dropdown
-              options={options}
-              image={user.profilePic || "https://avatar.iran.liara.run/public"}
-              name={user.username || "User"}
-            />
-          ) : (
-            <Button>
-              {" "}
-              {loading ? (
-                <RiLoader2Line className="animate-spin" />
-              ) : (
-                "Login"
-              )}{" "}
-            </Button>
-          )}
+      </div>
+      <div className="flex flex-col justify-between flex-grow w-full  items-center gap-6">
+        <div className="">
+          <AiFillHome size={27} />
+        </div>
+        <div>
+          <AiFillPlusCircle size={27} />
+        </div>
+        <div>
+          <AiFillHeart size={27} />
+        </div>
+        <div>
+          <AiFillBell size={27} />
+        </div>
+        <div className="flex-grow flex items-end py-4">
+          <AiFillSetting size={27} />
         </div>
       </div>
     </div>

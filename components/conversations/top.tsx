@@ -46,7 +46,7 @@ const Top = ({ fn }: { fn: () => Promise<void> }) => {
           setVisible(false);
         }, 250);
       }}
-      className="w-full rounded-lg group  z-50 h-10 items-center p-3 relative flex gap-2"
+      className="w-full rounded-lg group  z-50 px-3 h-[56px] items-center relative flex gap-2"
     >
       <h3
         className={cn(

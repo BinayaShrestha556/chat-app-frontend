@@ -74,14 +74,35 @@ const SideBarCard = ({
         pathname === `/dashboard/${id}` ? "bg-primary" : "bg-transparent"
       }`}
     >
-      <div className="relative h-full rounded-full overflow-hidden  aspect-square">
-        {image.length === 1 && (
+      <div className="relative h-full rounded-full   aspect-square">
+        {image.length === 1 ? (
           <Image
             src={image[0]}
             alt="pfp"
             fill
             className="object-center object-cover"
           />
+        ) : (
+          <div className="h-full relative aspect-square ">
+            <div className="relative  h-[75%] w-[75%] -right-1 -top-1 ">
+              {" "}
+              <Image
+                alt="pfp 1"
+                src={image[0]}
+                fill
+                className="object-center object-cover"
+              />
+            </div>
+            <div className="relative -top-4 h-[75%] w-[75%]  left-3 ">
+              {" "}
+              <Image
+                alt="pfp 1"
+                src={image[1]}
+                fill
+                className="object-center object-cover"
+              />
+            </div>
+          </div>
         )}
       </div>
       <div className="flex-1 w-40">

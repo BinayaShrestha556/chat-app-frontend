@@ -50,10 +50,11 @@ const Page = () => {
     (e) => e.username !== user.username
   );
 
-  const image =
-    filteredParticipants?.length === 1
-      ? filteredParticipants[0].profilePic
-      : ""; // If group chat, adjust how you handle images
+  const image = filteredParticipants?.map((e) => ({
+    pfp: e.profilePic,
+    id: e.id,
+  }));
+  // If group chat, adjust how you handle images
 
   const name = filteredParticipants?.map((e) => e.fullname).join(", ");
   if (error) return error;
