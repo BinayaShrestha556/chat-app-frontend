@@ -80,28 +80,28 @@ const Navbar = () => {
   const onOpen = useGroupModal((state) => state.onOpen);
 
   return (
-    <div className=" px-3 border h-full flex flex-col shadow">
+    <div className=" w-16 border h-full flex flex-col shadow">
       <div className="h-16 flex items-center justify-center">
         <div className="w-12 relative ">
           <Image src={logo} alt="logo" className="object-fit object-center" />
         </div>
       </div>
-      <div className="flex flex-col justify-between flex-grow w-full  items-center gap-6">
-        <div className="">
+      <div className="flex flex-col justify-between flex-grow w-full  items-center ">
+        <div className=" hover:bg-accent w-full h-14  flex items-center justify-center cursor-pointer">
           <Link href={"/dashboard"}>
             <AiFillHome size={27} />
           </Link>
         </div>
-        <div>
+        <div className=" hover:bg-accent w-full h-14 flex items-center justify-center cursor-pointer">
           <AiFillPlusCircle size={27} onClick={() => onOpen()} />
         </div>
-        <div>
+        <div className=" hover:bg-accent w-full h-14  flex items-center justify-center cursor-pointer">
           <AiFillHeart size={27} />
         </div>
-        <div>
+        <div className=" hover:bg-accent w-full h-14  flex items-center justify-center cursor-pointer">
           <AiFillBell size={27} />
         </div>
-        <div className="flex-grow flex items-end py-4">
+        <div className="flex-grow flex items-end py-4 hover:bg-accent w-full h-14 justify-center cursor-pointer">
           <AiFillSetting size={27} />
         </div>
       </div>

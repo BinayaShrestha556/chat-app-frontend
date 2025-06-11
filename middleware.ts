@@ -65,36 +65,40 @@ export async function middleware(req: NextRequest) {
 
   let user = null;
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/validate-refresh`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${refreshToken}`,
-      },
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/validate-refresh`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${refreshToken}`,
+        },
+      }
+    );
+    //  const data= await res.json()
+    if (res.status === 200) {
+      user = true;
     }
-  );
-  //  const data= await res.json()
-  if (res.status === 200) {
-    user = true;
-  }
-  if (!user && !isAuthRoute) {
-    console.log("Not authenticated. Redirecting to login...");
+    if (!user && !isAuthRoute) {
+      console.log("Not authenticated. Redirecting to login...");
+      return NextResponse.redirect(new URL("/auth/login", req.url));
+    }
+    if (user && isAuthRoute) {
+      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
+    }
+    const isRedirectToDashboardRoute = redirectToDashboardRoute.includes(
+      nextUrl.pathname
+    );
+    if (user && isRedirectToDashboardRoute) {
+      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
+    }
+    console.log(req.url);
+
+    return response;
+  } catch (error) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
-  if (user && isAuthRoute) {
-    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
-  }
-  const isRedirectToDashboardRoute = redirectToDashboardRoute.includes(
-    nextUrl.pathname
-  );
-  if (user && isRedirectToDashboardRoute) {
-    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
-  }
-  console.log(req.url);
-
-  return response;
 }
 
 export const config = {
