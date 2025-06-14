@@ -4,6 +4,7 @@ import Conversations from "@/components/conversations/conversations";
 import { useUserStore } from "@/hooks/user-store";
 import { usePathname } from "next/navigation";
 import React from "react";
+import Loading from "@/components/dashboard/loading";
 
 const Layout = ({
   children,
@@ -12,12 +13,7 @@ const Layout = ({
 }>) => {
   const pathname = usePathname();
   const { loading } = useUserStore();
-  if (loading)
-    return (
-      <div className="w-full h-full items-center justify-center flex text-accent-foreground text-xl font-bold ">
-        LOADING....
-      </div>
-    );
+  if (loading) return <Loading />;
   return (
     <div className="flex-1 h-[calc(100%-80px)]   pb-2 grow flex w-full px-2 m-auto">
       <Navbar />

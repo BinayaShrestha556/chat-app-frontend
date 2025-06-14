@@ -17,7 +17,9 @@ import useFetch from "@/api-fetch/fetch";
 import { TiDelete } from "react-icons/ti";
 import toast from "react-hot-toast";
 import { useUserStore } from "@/hooks/user-store";
+import { useRouter } from "next/navigation";
 const AppModal = () => {
+  const router = useRouter();
   const [searchData, setSearchData] = useState<SearchData[] | null>();
   const [addedUser, setAddedUser] = useState<SearchData[]>([]);
   const [visible, setVisible] = useState(false);
@@ -49,18 +51,23 @@ const AppModal = () => {
   const removeUser = (user: SearchData) => {
     setAddedUser((current) => current.filter((e) => e.id !== user.id));
   };
-  const { onClose } = useGroupModal();
+  const { onClose, setCreated } = useGroupModal();
   const { user } = useUserStore();
   const onSubmit = async () => {
     try {
       const formattedUsers = addedUser.map((e) => e.id);
       const members = [...formattedUsers, user.id];
-      await callServer("/messages/create-conversation", "POST", {
+      const data = await callServer("/messages/create-conversation", "POST", {
         users: members,
       });
+
+      setCreated(true);
+      router.push(`/dashboard/${data.id}`);
     } catch (err) {
       console.log(err);
       toast.error(error);
+    } finally {
+      onClose();
     }
   };
   return (

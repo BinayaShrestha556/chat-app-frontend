@@ -99,7 +99,9 @@ const Navbar = () => {
           <AiFillHeart size={27} />
         </div>
         <div className=" hover:bg-accent w-full h-14  flex items-center justify-center cursor-pointer">
-          <AiFillBell size={27} />
+          <Link href="/dashboard/notifications">
+            <AiFillBell size={27} />
+          </Link>
         </div>
         <div className="flex-grow flex items-end py-4 hover:bg-accent w-full h-14 justify-center cursor-pointer">
           <AiFillSetting size={27} />

@@ -1,6 +1,7 @@
 "use client";
 import useFetch from "@/api-fetch/fetch";
 import Bottom from "@/components/chat/bottom";
+import LoadingComponent from "@/components/chat/loading";
 import MessageList, { Message } from "@/components/chat/messages";
 import TopPart from "@/components/chat/top-part";
 import { useMessageStore } from "@/hooks/message-store";
@@ -45,7 +46,7 @@ const Page = () => {
     getData();
   }, [id]);
   const messages = messagesByConversation[id];
-  if (loading) return null;
+  if (loading) return <LoadingComponent />;
   const filteredParticipants = conversation?.participants.filter(
     (e) => e.username !== user.username
   );

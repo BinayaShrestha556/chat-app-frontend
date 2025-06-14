@@ -5,8 +5,10 @@ import SideBarCard from "./sidebar-card";
 import { getSidebar } from "@/api-fetch/getSidebar";
 import { useUserStore } from "@/hooks/user-store";
 import { useSocketStore } from "@/hooks/useSocket-store";
-import { RiLoader5Line } from "react-icons/ri";
+
 import { AxiosError } from "axios";
+import { useGroupModal } from "@/hooks/use-create-group-modal";
+import Loading from "./loading";
 
 interface items {
   id: string;
@@ -49,9 +51,12 @@ const Sidebar = () => {
       setLoading(false);
     }
   };
+  const { created, setCreated } = useGroupModal();
   useEffect(() => {
+    console.log("hello from the conversations. ", created);
+    setCreated(false);
     fetchData();
-  }, []);
+  }, [created]);
   const formatted = items?.sort(
     (a, b) =>
       new Date(b.message.time).getTime() - new Date(a.message.time).getTime()
@@ -63,17 +68,7 @@ const Sidebar = () => {
       <div className="h-[1px] bg-border w-full " />
 
       {loading ? (
-        <div className="w-full text-accent-foreground text-xl  h-full flex justify-center items-center">
-          Loading
-          <div className="relative">
-            <RiLoader5Line size={25} className="animate-spin   duration-75" />
-            <RiLoader5Line
-              size={25}
-              className="animate-spin absolute top-0 duration-75"
-              style={{ animationDuration: "1.4s" }}
-            />
-          </div>
-        </div>
+        <Loading />
       ) : formatted?.length === 0 ? (
         <div className="w-full text-accent-foreground h-full flex items-center justify-center">
           Please add user by searching
