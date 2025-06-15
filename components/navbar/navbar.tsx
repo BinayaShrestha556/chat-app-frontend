@@ -8,7 +8,6 @@ import { useUserStore } from "@/hooks/user-store";
 import { useSocketConnection } from "@/hooks/useSocket-store";
 import useFetch, { refresh } from "@/api-fetch/fetch";
 
-import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import {
   AiFillBell,
@@ -48,13 +47,7 @@ const Navbar = () => {
         }
         setLoading(false);
       } catch (err: unknown) {
-        if (err instanceof AxiosError) {
-          console.log(err.response?.data?.error || "Something went wrong");
-          router.push("/auth/login");
-        } else {
-          console.log("An unknown error occurred");
-          router.push("/auth/login");
-        }
+        console.log(err);
         setLoading(false);
       } finally {
         setLoading(false);

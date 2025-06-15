@@ -2,14 +2,29 @@
 import React, { useEffect, useState } from "react";
 import Top from "./top";
 import SideBarCard from "./sidebar-card";
-import { getSidebar } from "@/api-fetch/getSidebar";
+
 import { useUserStore } from "@/hooks/user-store";
 import { useSocketStore } from "@/hooks/useSocket-store";
-
+import useFetch from "@/api-fetch/fetch";
 import { AxiosError } from "axios";
 import { useGroupModal } from "@/hooks/use-create-group-modal";
 import Loading from "./loading";
-
+interface Data {
+  id: string;
+  messages: {
+    body: string;
+    createdAt: string;
+    senderId: string;
+    pic: boolean;
+  }[];
+  participants: {
+    id: string;
+    username: string;
+    profilePic: string;
+    fullname: string;
+  }[];
+  createdAt: string;
+}
 interface items {
   id: string;
   createdAt: string;
@@ -30,25 +45,47 @@ const Sidebar = () => {
   const { user } = useUserStore();
   const [items, setItems] = useState<items[] | null>();
   const { joinRoom } = useSocketStore();
-  const [loading, setLoading] = useState(false);
+  const { callServer, loading } = useFetch();
   const fetchData = async () => {
     try {
-      setLoading(true);
-      const sidebarItems = await getSidebar();
+      const data = await callServer("/messages/get-conversations", "GET");
+      console.log(data);
+
+      const formattedItems = data.map((e: Data) => {
+        const lastMessage = e.messages?.[0];
+
+        return {
+          id: e.id,
+          createdAt: e.createdAt,
+          message: lastMessage
+            ? {
+                text: lastMessage.body,
+                time: lastMessage.createdAt,
+                sender: lastMessage.senderId,
+                pic: lastMessage.pic,
+              }
+            : {
+                text: "No messages yet",
+                time: e.createdAt,
+                sender: null,
+                pic: false,
+              },
+          participants: e.participants,
+        };
+      });
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const convoIds: string[] = sidebarItems.map((e: any) => e.id);
+      const convoIds: string[] = formattedItems.map((e: any) => e.id);
       convoIds.forEach((element) => {
         joinRoom(element);
       });
-      setItems(sidebarItems);
-      setLoading(false);
+      setItems(formattedItems);
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         console.log(err.response?.data?.error || "Something went wrong");
       } else {
-        console.log("An unknown error occurred");
+        console.log(err);
       }
-      setLoading(false);
     }
   };
   const { created, setCreated } = useGroupModal();
