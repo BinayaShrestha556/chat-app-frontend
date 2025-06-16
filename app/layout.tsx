@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${lato.className} antialiased h-screen w-full flex  flex-col`}
+        className={`${lato.className} antialiased h-[100dvh] w-full flex  flex-col`}
       >
         <ToastProvider />
         <ModalProviders />

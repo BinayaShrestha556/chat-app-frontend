@@ -18,7 +18,6 @@ export const sendReq = async (
   method: "POST" | "GET",
   data?: any
 ) => {
-  console.log(`[sendReq] Server Action hit for URL: ${url}`);
   // Construct the full backend API URL
   const fullUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api${url}`;
 
@@ -27,7 +26,7 @@ export const sendReq = async (
 
   try {
     const cookieStore = await cookies(); // Access cookies from the incoming request headers
-    console.log(cookieStore.get("access_token"));
+
     const accessToken = cookieStore.get("access_token")?.value; // Get the access token
 
     if (!accessToken) {

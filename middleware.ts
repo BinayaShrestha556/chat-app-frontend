@@ -18,7 +18,6 @@ export async function middleware(req: NextRequest) {
 
   // --- 1. No Refresh Token Found ---
   if (!refreshToken) {
-    console.log("No refresh_token found. Redirecting to login...");
     if (!isAuthRoute) {
       return NextResponse.redirect(new URL("/auth/login", req.url));
     }
@@ -56,7 +55,6 @@ export async function middleware(req: NextRequest) {
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
       });
-      console.log("Access token refreshed successfully.");
     } else {
       // --- 4. Refresh Failed (Non-200 Status): Clear Tokens & Redirect ---
       console.error(
@@ -85,9 +83,7 @@ export async function middleware(req: NextRequest) {
   if (isAuthenticated) {
     if (isAuthRoute) {
       // If authenticated and trying to access an auth route, redirect to dashboard
-      console.log(
-        "Authenticated user accessing auth route. Redirecting to dashboard."
-      );
+
       return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
     }
     const isRedirectToDashboardRoute = redirectToDashboardRoute.includes(
@@ -95,15 +91,13 @@ export async function middleware(req: NextRequest) {
     );
     if (isRedirectToDashboardRoute) {
       // If authenticated and trying to access a route that redirects to dashboard, redirect
-      console.log(
-        "Authenticated user accessing redirect route. Redirecting to dashboard."
-      );
+
       return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
     }
   }
 
   // If none of the above conditions met, allow the request to proceed with the modified response
-  console.log(`Allowing request for: ${req.url}`);
+
   return response;
 }
 
