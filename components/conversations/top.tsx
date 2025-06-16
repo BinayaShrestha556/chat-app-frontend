@@ -7,6 +7,8 @@ import SearchUserCard from "./searchUserCard";
 import useFetch from "@/api-fetch/fetch";
 
 import { RiLoader2Line } from "react-icons/ri";
+import { AiOutlineMenuUnfold } from "react-icons/ai";
+import { useSidebarStore } from "@/hooks/sidebar-store";
 export interface SearchData {
   id: string;
   fullname: string;
@@ -36,7 +38,7 @@ const Top = ({ fn }: { fn: () => Promise<void> }) => {
   };
   const ref = useRef<HTMLInputElement>(null);
   const [visible, setVisible] = useState(false);
-
+  const { toggle } = useSidebarStore();
   if (error) return error;
   return (
     <div
@@ -46,8 +48,9 @@ const Top = ({ fn }: { fn: () => Promise<void> }) => {
           setVisible(false);
         }, 250);
       }}
-      className="w-full rounded-lg group  z-50 px-3 h-[56px] items-center relative flex gap-2"
+      className="w-full rounded-lg group  z-20 px-3 h-[56px] items-center relative flex gap-2 "
     >
+      <AiOutlineMenuUnfold onClick={toggle} size={30} className="mt-0.5 " />
       <h3
         className={cn(
           "font-bold text-xl overflow-hidden transition-all",

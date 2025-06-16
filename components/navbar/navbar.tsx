@@ -14,10 +14,14 @@ import {
   AiFillHeart,
   AiFillHome,
   AiFillSetting,
+  AiOutlineMenuFold,
 } from "react-icons/ai";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { useGroupModal } from "@/hooks/use-create-group-modal";
 import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+import { useSidebarStore } from "@/hooks/sidebar-store";
 
 const Navbar = () => {
   const { user, setUser, setLoading } = useUserStore();
@@ -71,33 +75,111 @@ const Navbar = () => {
   //   },
   // ];
   const onOpen = useGroupModal((state) => state.onOpen);
-
+  const { isOpen, close } = useSidebarStore();
   return (
-    <div className=" w-16 border h-full flex flex-col shadow">
-      <div className="h-16 flex items-center justify-center">
-        <div className="w-12 relative ">
-          <Image src={logo} alt="logo" className="object-fit object-center" />
+    <div className="md:w-16 relative w-0 ">
+      <div
+        className={cn(
+          "  z-40 bg-white overflow-hidden border transition-all duration-300 h-full flex flex-col shadow  absolute",
+          isOpen ? "w-64" : "md:w-16 w-0"
+        )}
+      >
+        <div className="absolute right-2 z-50 top-4 ">
+          <AiOutlineMenuFold
+            size={27}
+            onClick={close}
+            className={cn(
+              "transition-all mt-0.5 opacity-0 duration-300",
+              isOpen && "opacity-100"
+            )}
+          />
         </div>
-      </div>
-      <div className="flex flex-col justify-between flex-grow w-full  items-center ">
-        <div className=" hover:bg-accent w-full h-14  flex items-center justify-center cursor-pointer">
-          <Link href={"/dashboard"}>
-            <AiFillHome size={27} />
-          </Link>
+        <div
+          className={cn(
+            "h-16 flex gap-3 items-center pl-2.5  relative",
+            isOpen && "justify-start px-3"
+          )}
+        >
+          <div className="h-[44px] aspect-square relative left-0 top-2">
+            <Image src={logo} alt="logo" className="object-fit object-center" />
+          </div>
+          <h1 className={cn("text-2xl font-bold absolute left-16 ")}>
+            VibeWAVE
+          </h1>
         </div>
-        <div className=" hover:bg-accent w-full h-14 flex items-center justify-center cursor-pointer">
-          <AiFillPlusCircle size={27} onClick={() => onOpen()} />
-        </div>
-        <div className=" hover:bg-accent w-full h-14  flex items-center justify-center cursor-pointer">
-          <AiFillHeart size={27} />
-        </div>
-        <div className=" hover:bg-accent w-full h-14  flex items-center justify-center cursor-pointer">
-          <Link href="/dashboard/notifications">
-            <AiFillBell size={27} />
-          </Link>
-        </div>
-        <div className="flex-grow flex items-end py-4 hover:bg-accent w-full h-14 justify-center cursor-pointer">
-          <AiFillSetting size={27} />
+        <div
+          className={cn(
+            "flex flex-col justify-between flex-grow w-full  items-center ",
+            isOpen && "items-start"
+          )}
+        >
+          <div
+            className={cn(
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              isOpen && "justify-start px-5"
+            )}
+          >
+            <Link
+              href={"/dashboard"}
+              className="flex gap-4 items-center left-5 absolute cursor-pointer "
+            >
+              <AiFillHome size={27} />
+              <h2 className="font-bold ">DASHBOARD</h2>
+            </Link>
+          </div>
+          <div
+            className={cn(
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              isOpen && "justify-start px-5"
+            )}
+          >
+            <div
+              onClick={onOpen}
+              className="flex gap-4 items-center left-5 absolute cursor-pointer "
+            >
+              <AiFillPlusCircle size={27} />
+              <h2 className="font-bold text-nowrap">CREATE GROUP</h2>
+            </div>
+          </div>
+          <div
+            className={cn(
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              isOpen && "justify-start px-5"
+            )}
+          >
+            <div className="flex gap-4 items-center left-5 absolute cursor-pointer ">
+              <AiFillHeart size={27} />
+              <h2 className="font-bold ">FAVOURATES</h2>
+            </div>
+          </div>
+          <div
+            className={cn(
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              isOpen && "justify-start px-5"
+            )}
+          >
+            <Link
+              href={"/notification"}
+              className="flex gap-4 items-center left-5 absolute cursor-pointer "
+            >
+              <AiFillBell size={27} />
+              <h2 className="font-bold ">NOTIFICATION</h2>
+            </Link>
+          </div>
+          <div
+            className={cn(
+              " hover:bg-accent w-full h-14 flex-grow  relative flex items-end py-3 justify-center  ",
+              isOpen && "justify-start px-5"
+            )}
+          >
+            <Link
+              href={"/dashboard"}
+              className="flex gap-4 items-center left-5 absolute cursor-pointer "
+            >
+              <AiFillSetting size={27} />
+              <h2 className="font-bold ">Settings</h2>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
