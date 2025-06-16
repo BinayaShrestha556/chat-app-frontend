@@ -4,7 +4,7 @@ import { removeCookies } from "@/server-actions/login";
 import axios from "axios";
 import React, { useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [loading, setLoading] = useState(false);
 
   const logout = async () => {
@@ -40,4 +40,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
