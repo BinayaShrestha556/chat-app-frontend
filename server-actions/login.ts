@@ -36,3 +36,8 @@ export const setAccessToken = async (access: string) => {
     maxAge: 60 * 60,
   });
 };
+export const removeCookies = async () => {
+  const cookieStore = await cookies();
+  cookieStore.set("access_token", "", { maxAge: 0, path: "/" });
+  cookieStore.set("refresh_token", "", { maxAge: 0, path: "/" });
+};

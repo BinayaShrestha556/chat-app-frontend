@@ -60,29 +60,37 @@ const Navbar = () => {
 
     if (!user.isLoggedIn) fetchUser();
   }, [user.isLoggedIn, setUser]);
-  // const options = [
-  //   { icon: MdAccountCircle, name: "Profile", onClick: () => {} },
-  //   {
-  //     icon: IoMdLogOut,
-  //     name: "Log out",
-  //     onClick: async () => {
-  //       await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/logout`, {
-  //         method: "POST",
-  //         credentials: "include",
-  //       });
-  //       window.location.pathname = "/";
-  //     },
-  //   },
-  // ];
+
   const onOpen = useGroupModal((state) => state.onOpen);
   const { isOpen, close } = useSidebarStore();
+
+  // Function to handle clicks on the overlay
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    // Check if the click target is exactly the overlay div itself
+    // This prevents the sidebar from closing when clicking inside the sidebar content
+    if (event.target === event.currentTarget) {
+      close();
+    }
+  };
+
   return (
-    <div className="md:w-16 relative w-0 ">
+    <div className={cn("md:w-16 relative w-0 ")}>
+      {/* Overlay for closing the sidebar */}
+      {/* Conditionally render the overlay only when the sidebar is open */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-transparent" // Use fixed inset-0 to cover the whole screen, lower z-index than sidebar
+          onClick={handleOverlayClick}
+        ></div>
+      )}
+
       <div
         className={cn(
-          "  z-40 bg-white overflow-hidden border transition-all duration-300 h-full flex flex-col shadow  absolute",
+          "z-40 bg-white overflow-hidden border transition-all duration-300 h-full flex flex-col shadow absolute",
           isOpen ? "w-64" : "md:w-16 w-0"
         )}
+        // Prevent click events from propagating from the sidebar content to the overlay
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="absolute right-2 z-50 top-4 ">
           <AiOutlineMenuFold
@@ -96,7 +104,7 @@ const Navbar = () => {
         </div>
         <div
           className={cn(
-            "h-16 flex gap-3 items-center pl-2.5  relative",
+            "h-16 flex gap-3 items-center pl-2.5 relative",
             isOpen && "justify-start px-3"
           )}
         >
@@ -109,13 +117,13 @@ const Navbar = () => {
         </div>
         <div
           className={cn(
-            "flex flex-col justify-between flex-grow w-full  items-center ",
+            "flex flex-col justify-between flex-grow w-full items-center ",
             isOpen && "items-start"
           )}
         >
           <div
             className={cn(
-              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center ",
               isOpen && "justify-start px-5"
             )}
           >
@@ -124,12 +132,12 @@ const Navbar = () => {
               className="flex gap-4 items-center left-5 absolute cursor-pointer "
             >
               <AiFillHome size={27} />
-              <h2 className="font-bold ">DASHBOARD</h2>
+              <h2 className="font-bold ">Dashboard</h2>
             </Link>
           </div>
           <div
             className={cn(
-              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center ",
               isOpen && "justify-start px-5"
             )}
           >
@@ -138,42 +146,42 @@ const Navbar = () => {
               className="flex gap-4 items-center left-5 absolute cursor-pointer "
             >
               <AiFillPlusCircle size={27} />
-              <h2 className="font-bold text-nowrap">CREATE GROUP</h2>
+              <h2 className="font-bold text-nowrap">Create group</h2>
             </div>
           </div>
           <div
             className={cn(
-              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center ",
               isOpen && "justify-start px-5"
             )}
           >
             <div className="flex gap-4 items-center left-5 absolute cursor-pointer ">
               <AiFillHeart size={27} />
-              <h2 className="font-bold ">FAVOURATES</h2>
+              <h2 className="font-bold ">Favourates</h2>
             </div>
           </div>
           <div
             className={cn(
-              " hover:bg-accent w-full h-14 relative flex items-center justify-center  ",
+              " hover:bg-accent w-full h-14 relative flex items-center justify-center ",
               isOpen && "justify-start px-5"
             )}
           >
             <Link
-              href={"/notification"}
+              href={"/dashboard/notifications"}
               className="flex gap-4 items-center left-5 absolute cursor-pointer "
             >
               <AiFillBell size={27} />
-              <h2 className="font-bold ">NOTIFICATION</h2>
+              <h2 className="font-bold ">Notifictions</h2>
             </Link>
           </div>
           <div
             className={cn(
-              " hover:bg-accent w-full h-14 flex-grow  relative flex items-end py-3 justify-center  ",
-              isOpen && "justify-start px-5"
+              "  w-full h-14 relative flex flex-grow items-end pb-3 justify-center ",
+              isOpen && "justify-start px-5 "
             )}
           >
             <Link
-              href={"/dashboard"}
+              href={"/dashboard/settings"}
               className="flex gap-4 items-center left-5 absolute cursor-pointer "
             >
               <AiFillSetting size={27} />
