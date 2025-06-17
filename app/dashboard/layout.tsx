@@ -15,7 +15,7 @@ const Layout = ({
   const { loading } = useUserStore();
   if (loading) return <Loading />;
   return (
-    <div className="flex-1 h-[calc(100%-80px)]   pb-2 grow flex w-full px-2 m-auto">
+    <div className="flex-1 h-[calc(100%-80px)]   md:pb-2 grow flex w-full md:px-2 p-0 m-auto">
       <Navbar />
       <div
         className={`w-full md:w-80  lg:block ${

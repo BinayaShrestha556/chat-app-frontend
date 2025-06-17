@@ -12,8 +12,9 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import useFetch from "@/api-fetch/fetch";
+
 import { Button } from "./ui/button";
+import axios from "axios";
 
 const SignupForm = () => {
   const loginSchema = z.object({
@@ -30,15 +31,22 @@ const SignupForm = () => {
       username: "",
     },
   });
-  const { callServer, loading } = useFetch();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    setLoading(true);
+
     try {
       console.log(values);
-      await callServer("/auth/signup", "POST", values);
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`,
+        values
+      );
       window.location.pathname = "/";
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   const [mounted, setMounted] = useState(false);
